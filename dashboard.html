@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Dashboard</title>
+    <style>
+        /* Apply basic styling to the container */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Style the header */
+
+
+/* Style the "Add Menu Item" button */
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Style the menu item list */
+#menu-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Style each menu item in the list */
+#menu-list li {
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin: 10px 0;
+    background-color: #fff;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Style the "Edit" and "Remove" buttons */
+button {
+    padding: 5px 10px;
+    font-size: 14px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Style the input fields in the prompt dialogs */
+input[type="text"], input[type="number"] {
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+/* Style the submit button in the prompt dialogs */
+input[type="submit"] {
+    padding: 5px 10px;
+    font-size: 14px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Add hover effects to buttons and menu items */
+button:hover, input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+#menu-list li:hover {
+    background-color: #f2f2f2;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Menu Dashboard</h1>
+        <button onclick="addItem()">Add Menu Item</button>
+        <ul id="menu-list">
+            <!-- Existing menu items will be displayed here -->
+        </ul>
+    </div>
+
+    <script>
+        // Sample initial menu items
+        const initialMenuItems = [
+            { id: 1, name: "Coffee", price: 2.5 },
+            { id: 2, name: "Tea", price: 2.0 },
+            // Add more initial menu items here
+        ];
+
+        // Function to display menu items
+        function displayMenuItems() {
+            const menuList = document.getElementById("menu-list");
+            menuList.innerHTML = "";
+
+            for (const item of initialMenuItems) {
+                const listItem = document.createElement("li");
+                listItem.innerHTML = `${item.name} - $${item.price.toFixed(2)} <button onclick="editItem(${item.id})">Edit</button> <button onclick="removeItem(${item.id})">Remove</button>`;
+                menuList.appendChild(listItem);
+            }
+        }
+
+        // Function to add a new menu item
+        function addItem() {
+            // In a real application, you'd likely open a form/modal for input
+            // For this example, let's use prompt
+            const itemName = prompt("Enter the menu item name:");
+            const itemPrice = parseFloat(prompt("Enter the menu item price:"));
+
+            if (itemName && !isNaN(itemPrice)) {
+                const newItem = {
+                    id: Date.now(), // Generate a unique ID (in practice, use UUID or database-generated IDs)
+                    name: itemName,
+                    price: itemPrice,
+                };
+
+                initialMenuItems.push(newItem);
+                displayMenuItems();
+            }
+        }
+
+        // Function to edit a menu item
+        function editItem(itemId) {
+            const itemIndex = initialMenuItems.findIndex(item => item.id === itemId);
+
+            if (itemIndex !== -1) {
+                const newName = prompt("Edit the menu item name:", initialMenuItems[itemIndex].name);
+                const newPrice = parseFloat(prompt("Edit the menu item price:", initialMenuItems[itemIndex].price));
+
+                if (newName && !isNaN(newPrice)) {
+                    initialMenuItems[itemIndex].name = newName;
+                    initialMenuItems[itemIndex].price = newPrice;
+                    displayMenuItems();
+                }
+            }
+        }
+
+        // Function to remove a menu item
+        function removeItem(itemId) {
+            const itemIndex = initialMenuItems.findIndex(item => item.id === itemId);
+
+            if (itemIndex !== -1) {
+                initialMenuItems.splice(itemIndex, 1);
+                displayMenuItems();
+            }
+        }
+
+        // Initial display of menu items
+        displayMenuItems();
+    </script>
+</body>
+</html>
